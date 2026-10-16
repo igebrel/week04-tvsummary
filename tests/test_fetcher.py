@@ -1,8 +1,10 @@
 
 """Test downloading TV show records from the TVMaze API."""
 
+import pytest
 import requests
 
+from tvsummary.exceptions import FetchError
 from tvsummary.fetcher import TVMazeFetcher
 
 
@@ -36,7 +38,7 @@ def test_fetch_records_success(monkeypatch):
 
 
 def test_fetch_records_connection_error(monkeypatch):
-    """Check that connection errors are handled safely."""
+    """Check that connection errors raise FetchError."""
 
     def fake_get(url, timeout):
         raise requests.ConnectionError("Connection failed")
@@ -44,13 +46,13 @@ def test_fetch_records_connection_error(monkeypatch):
     monkeypatch.setattr(requests, "get", fake_get)
 
     fetcher = TVMazeFetcher()
-    result = fetcher.fetch_records()
 
-    assert result is None
+    with pytest.raises(FetchError, match="Connection failed"):
+        fetcher.fetch_records()
 
 
 def test_fetch_records_http_error(monkeypatch):
-    """Check that HTTP errors are handled safely."""
+    """Check that HTTP errors raise FetchError."""
 
     class FakeResponse:
         def raise_for_status(self):
@@ -62,6 +64,6 @@ def test_fetch_records_http_error(monkeypatch):
     monkeypatch.setattr(requests, "get", fake_get)
 
     fetcher = TVMazeFetcher()
-    result = fetcher.fetch_records()
 
-    assert result is None
+    with pytest.raises(FetchError, match="500 Server Error"):
+        fetcher.fetch_records()

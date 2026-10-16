@@ -1,6 +1,9 @@
+
 """Download TV show records from the TVMaze API."""
 
 import requests
+
+from tvsummary.exceptions import FetchError
 
 
 class TVMazeFetcher:
@@ -17,5 +20,6 @@ class TVMazeFetcher:
             return response.json()
 
         except requests.RequestException as error:
-            print(f"Unable to download records: {error}")
-            return None
+            raise FetchError(
+                f"Unable to download TV show records: {error}"
+            ) from error
