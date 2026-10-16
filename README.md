@@ -1,70 +1,109 @@
-# Week 03 - TVMaze Summary Project
+# Week 04 - TVMaze Summary Project
+
 ## Overview
 
-This project downloads TV show records from the TVMaze API and processes the returned data using Python. The program organizes the records and creates an aggregated summary in JSON format.
+This project builds on my Week 03 TVMaze Summary Project. It downloads TV show records from the TVMaze public API, processes the information, and creates a summary in JSON format.
 
-## Files
+For Lab 04, I added a TV show data model and automated tests to check that the program works correctly. I also used Ruff and Mypy to check the quality of my Python code.
+
+## Project Files
+
 - `src/tvsummary/fetcher.py` - Downloads TV show records from the TVMaze API.
-- `src/tvsummary/processor.py` - Processes the records and creates the summary.
-- `src/tvsummary/reporter.py` - Saves the summary to a JSON file.
-- `src/tvsummary/main.py` - Runs the project using the other modules.
-- `summary.json` - Contains the summary results.
+- `src/tvsummary/models.py` - Defines the TVShow data model.
+- `src/tvsummary/processor.py` - Calculates summary information about the TV shows.
+- `src/tvsummary/reporter.py` - Saves the summary as a JSON file.
+- `src/tvsummary/main.py` - Runs the complete program.
+- `tests/test_aggregations.py` - Tests the aggregation functions.
+- `tests/test_models.py` - Tests the TVShow data model.
+- `tests/test_fetcher.py` - Tests successful downloads and API errors.
+- `tests/test_main.py` - Tests the main program.
+- `environment.yml` - Defines the Conda environment.
 - `pyproject.toml` - Contains the project configuration.
-- `requirements.txt` - Lists the required Python packages.
-- `.gitignore` - Lists files and folders that Git should ignore.
+- `requirements.txt` - Lists the Python package dependencies.
+- `README.md` - Explains the project.
 
 ## Requirements
 
-- Python 3.11 or later
+- Python 3.11
 - requests
+- pytest
+- Ruff
+- Mypy
 
 ## Installation
 
+I used Anaconda and Visual Studio Code to complete this project.
 
-I used a Conda environment to run this project.
-
-To create the environment, run:
+To create the Conda environment, run:
 
 ```bash
 conda env create -f environment.yml
 ```
 
-To activate the environment, run:
+To install the project in the environment, run:
 
 ```bash
-conda activate tvsummary
+conda run -n tvsummary-lab04 python -m pip install -e .
 ```
 
-To install the project, run:
-
-```bash
-pip install -e .
-```
+The testing and code-quality tools must also be installed in the environment.
 
 ## How to Run
 
-Run the program from the terminal:
+Run the program using:
 
 ```bash
-conda run -n tvsummary python -m tvsummary.main
+conda run -n tvsummary-lab04 python -m tvsummary.main
 ```
 
-## Output
+The program downloads TV show records, processes the data, and saves a summary in JSON format.
 
-The program prints the number of processed TV show records and creates `summary.json` containing the aggregated results.
+## Automated Testing
 
-## Acknowledgement
+I used pytest to test different parts of my project, including data processing, the TVShow model, API error handling, and the main program.
 
-I used ChatGPT for guidance when I had questions about setting up the project, using Git, and checking my work. I reviewed the code and tested the program before completing the project.
+To run all tests, use:
+
+```bash
+conda run -n tvsummary-lab04 python -m pytest -v
+```
+
+During development, I ran 15 automated tests, and all 15 passed.
+
+## Code Quality
+
+I used Ruff to check for formatting and common code-quality problems.
+
+```bash
+conda run -n tvsummary-lab04 python -m ruff check src tests
+```
+
+I also used Mypy to check for potential type-related issues.
+
+```bash
+conda run -n tvsummary-lab04 python -m mypy src
+```
+
+Both checks passed during development.
 
 ## Data Quirks
 
-The TVMaze API may contain missing or incomplete values for some TV shows. For example, some records may not include a language, genre, or rating. The program checks these values before processing the records so that missing data does not cause the program to fail.
+Some TVMaze records may have missing languages, genres, ratings, or premiere dates. The program checks for missing values when calculating the summary.
+
+The TVShow model also provides default values for missing information.
 
 ## Design Choices
 
-I used different Python collections to organize the data. I used a dictionary to group the TV shows by genre, a set to keep the unique languages, and a list to store the records. I also used a comprehension when processing the data. I chose these collections because they made it easier for me to organize and summarize the TV show records.
+I divided the program into separate modules to make it easier to understand and test.
+
+I used a dataclass to represent a TV show and dictionaries, lists, and sets to process the records. I used pytest to check the results and monkeypatch to simulate API responses without making real internet requests during testing.
 
 ## Known Limitations
 
-The program depends on the TVMaze API, so it needs an internet connection to download the records. If the API is unavailable, the program cannot get the data. The results also depend on the information provided by the TVMaze API.
+The program requires an internet connection to download current records from the TVMaze API. If the API is unavailable, the program cannot download new records.
+
+The quality of the summary also depends on the information provided by TVMaze.
+
+## Acknowledgement
+
+I used ChatGPT for guidance with Python, automated testing, Git, and project documentation. I reviewed the code, ran the tests, and checked the results while completing this lab.

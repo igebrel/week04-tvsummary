@@ -1,5 +1,6 @@
 
-from tvsummary.processor import count_genres, average_rating_by_language
+from tvsummary.processor import average_rating_by_language, count_genres
+
 
 def test_count_genres_with_multiple_genres():
     """Check that the program counts different genres correctly."""
