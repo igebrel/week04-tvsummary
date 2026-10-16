@@ -25,7 +25,7 @@ def test_fetch_records_success(monkeypatch):
 
     def fake_get(url, timeout):
         assert url == "https://api.tvmaze.com/shows?page=0"
-        assert timeout == 10
+        assert timeout == 30
         return FakeResponse()
 
     monkeypatch.setattr(requests, "get", fake_get)

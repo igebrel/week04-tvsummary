@@ -1,0 +1,15 @@
+
+# Configuration for the TVMaze Summary Project
+
+[api]
+base_url = "https://api.tvmaze.com/shows"
+timeout = 30
+
+[processing]
+minimum_records = 50
+
+[report]
+output_file = "summary.json"
+
+[logging]
+level = "INFO"
